@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/accordion"
 
 export default function Chat() {
-    const { messages, input, handleInputChange, handleSubmit } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         initialMessages: [
             { id: '0', role: 'system', content: chatbotPrompt },
             { id: '1', role: 'assistant', content: 'Hi! How can I assist you today?' },
@@ -50,6 +50,7 @@ export default function Chat() {
                                         input={input}
                                         handleInputChange={handleInputChange}
                                         handleSubmit={handleSubmit}
+                                        isLoading={isLoading}
                                     />
                                 </div>
                             </div>
