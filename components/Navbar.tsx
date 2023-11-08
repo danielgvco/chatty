@@ -14,7 +14,7 @@ import {
 export default function Navbar() {
     return (
         <nav className='flex fixed h-14 w-screen top-0 px-4 lg:px-8 items-center justify-between backdrop-blur'>
-            <div><Bot size={32} /></div>
+            <div className='flex items-center'><Bot size={32} className='mr-2' /><p className='text-[1.2rem] font-[700]'>Chatty</p></div>
             <div className='hidden lg:flex space-x-2 items-center'>
                 <Button variant='ghost' asChild><Link href='#home' className='font-[700]'>Home</Link></Button>
                 <Button variant='ghost' asChild><Link href='#about' className='font-[700]'>About</Link></Button>
