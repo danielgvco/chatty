@@ -26,8 +26,8 @@ export async function POST(req: Request) {
       { name, arguments: args },
       createFunctionCallMessages,
     ) => {
-      if (myFunctions[name]) {
-        const result = await myFunctions[name](args);
+      if ((myFunctions as any)[name]) {
+        const result = await (myFunctions as any)[name](args);
         const newMessages = createFunctionCallMessages(result);
         return openai.chat.completions.create({
           messages: [...messages, ...newMessages],
