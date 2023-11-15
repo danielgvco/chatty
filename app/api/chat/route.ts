@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { functions } from '@/helpers/constants/functions';
  
 // Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
@@ -22,6 +23,7 @@ export async function POST(req: Request) {
       model: 'gpt-4-1106-preview',
       stream: true,
       messages: messagesWithSystemContext,
+      functions,
     });
   
     // Convert the response into a friendly text-stream

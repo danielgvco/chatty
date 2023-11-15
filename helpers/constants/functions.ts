@@ -1,6 +1,6 @@
 import type { ChatCompletionCreateParams } from '@/node_modules/openai/resources/chat';
 
-const functions: ChatCompletionCreateParams.Function[] = [
+export const functions: ChatCompletionCreateParams.Function[] = [
     {
         name: 'get_current_weather',
         description: 'Get the current weather',
