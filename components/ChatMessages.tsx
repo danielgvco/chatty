@@ -1,10 +1,16 @@
 import React, { useRef, useEffect } from 'react';
 import MarkdownLite from './MarkdownLite';
 
+interface FunctionCall {
+  name?: string;
+  arguments?: string;
+}
+
 interface Message {
   id: string;
   role: string;
   content: string;
+  function_call?: FunctionCall | string;
 }
 
 interface ChatMessagesProps {
@@ -26,7 +32,22 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
             className={`mb-4 p-2 rounded-md ${m.role === 'user' ? 'bg-stone-200 max-w-[80%] relative left-[20%]' : 'bg-blue-300 max-w-[80%] '}`} 
             key={m.id}
           >
-            <MarkdownLite text={m.content} />
+            {m.function_call ? (
+              typeof m.function_call === 'string' ? (
+                m.function_call.split('\\n').map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))
+              ) : (
+                m.role === 'function' && (
+                  <div>
+                    <p>Function name: {m.function_call.name}</p>
+                    <p>Function arguments: {m.function_call.arguments}</p>
+                  </div>
+                )
+              )
+            ) : (
+              m.content
+            )}
             {index === messages.length - 1 && <div ref={endOfMessagesRef} />}
           </div>
         )

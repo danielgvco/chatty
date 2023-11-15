@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { functions } from '@/helpers/constants/functions';
+import * as myFunctions from '@/functions';
  
 // Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
@@ -11,24 +12,32 @@ const openai = new OpenAI({
 export const runtime = 'edge';
  
 export async function POST(req: Request) {
-    // Extract the `messages` from the body of the request
-    const { messages } = await req.json();
-  
-    // Add a system message to provide context
-    const systemMessage = { role: 'system', content: 'You are a chatbot assisntant and your name is Asuna' };
-    const messagesWithSystemContext = [systemMessage, ...messages];
-  
-    // Ask OpenAI for a streaming chat completion given the prompt
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
-      stream: true,
-      messages: messagesWithSystemContext,
-      functions,
-    });
-  
-    // Convert the response into a friendly text-stream
-    const stream = OpenAIStream(response as any);
-  
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
-  }
+  const { messages } = await req.json();
+
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4-1106-preview',
+    stream: true,
+    messages,
+    functions,
+  });
+
+  const stream = OpenAIStream(response as any, {
+    experimental_onFunctionCall: async (
+      { name, arguments: args },
+      createFunctionCallMessages,
+    ) => {
+      if (myFunctions[name]) {
+        const result = await myFunctions[name](args);
+        const newMessages = createFunctionCallMessages(result);
+        return openai.chat.completions.create({
+          messages: [...messages, ...newMessages],
+          stream: true,
+          model: 'gpt-4-1106-preview',
+          functions,
+        });
+      }
+    },
+  });
+
+  return new StreamingTextResponse(stream);
+}
