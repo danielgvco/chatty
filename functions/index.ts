@@ -3,3 +3,4 @@ export type MyFunctionsType = {
 };
 
 export { get_current_weather } from './get_current_weather';
+export * from './dbfunctions';
