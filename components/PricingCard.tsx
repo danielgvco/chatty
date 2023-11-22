@@ -17,7 +17,7 @@ interface PricingCardProps {
     calltoaction?: string
 }
 
-const PricingCard: FC<PricingCardProps> = ({ name, description, price = 99, features, calltoaction = 'Book a call' }) => {
+const PricingCard: FC<PricingCardProps> = ({ name, description, price = 99, features, calltoaction = 'Book a call using the chatbot' }) => {
     return (
         <Card className='w-[380px]'>
             <CardHeader>
@@ -42,7 +42,7 @@ const PricingCard: FC<PricingCardProps> = ({ name, description, price = 99, feat
                 </div>
             </CardContent>
             <CardFooter className=''>
-                <Button>{calltoaction}</Button>
+                <Button variant='outline'>{calltoaction}</Button>
             </CardFooter>
         </Card>
     )

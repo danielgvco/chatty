@@ -14,9 +14,9 @@ import {
 export default function Navbar() {
     return (
         <nav className='flex fixed h-14 w-screen top-0 px-4 lg:px-8 items-center justify-between backdrop-blur'>
-            <div className='flex items-center'><Bot size={32} className='mr-2' /><p className='text-[1.2rem] font-[700]'>Chatty</p></div>
+            <Link href='/'><div className='flex items-center'><Bot size={32} className='mr-2' /><p className='text-[1.2rem] font-[700]'>Chatty</p></div></Link>
             <div className='hidden lg:flex space-x-2 items-center'>
-                <Button variant='ghost' asChild><Link href='/#home' className='font-[700]'>Home</Link></Button>
+                <Button variant='ghost' asChild><Link href='/' className='font-[700]'>Home</Link></Button>
                 <Button variant='ghost' asChild><Link href='/#about' className='font-[700]'>About</Link></Button>
                 <Button variant='ghost' asChild><Link href='/#pricing' className='font-[700]'>Pricing</Link></Button>
                 <Button variant='ghost' asChild><Link href='/#contact' className='font-[700]'>Contact</Link></Button>
@@ -28,7 +28,7 @@ export default function Navbar() {
                         <Button variant='outline'><Menu /></Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem asChild><Link href='/#home'>Home</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link href='/'>Home</Link></DropdownMenuItem>
                         <DropdownMenuItem asChild><Link href='/#about'>About</Link></DropdownMenuItem>
                         <DropdownMenuItem asChild><Link href='/#pricing'>Pricing</Link></DropdownMenuItem>
                         <DropdownMenuItem asChild><Link href='/#contact'>Contact</Link></DropdownMenuItem>

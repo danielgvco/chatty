@@ -16,7 +16,6 @@ export async function fetchRevenue() {
   try {
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    console.log(data.rows);
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -74,6 +73,42 @@ export async function countRowsInTable(dbTable: 'customers' | 'invoices' | 'reve
   }
 }
 
+export async function countRowsInTableByStatus(dbTable: 'invoices' | 'call_bookings' | 'tickets') {
+  noStore();
+  try {
+    let data;
+    switch (dbTable) {
+      case 'invoices':
+        data = await sql<{ status: string, count: string }>`
+          SELECT status, COUNT(*) 
+          FROM invoices 
+          GROUP BY status;
+        `;
+        break;
+      case 'call_bookings':
+        data = await sql<{ status: string, count: string }>`
+          SELECT status, COUNT(*) 
+          FROM call_bookings 
+          GROUP BY status;
+        `;
+        break;
+      case 'tickets':
+        data = await sql<{ status: string, count: string }>`
+          SELECT status, COUNT(*) 
+          FROM tickets 
+          GROUP BY status;
+        `;
+        break;
+      default:
+        throw new Error(`Invalid table name: ${dbTable}`);
+    }
+    return data.rows.map(row => ({ status: row.status, count: Number(row.count) }));
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to count rows in table ${dbTable}`);
+  }
+}
+
 //////////////////////////
 
 
@@ -125,7 +160,6 @@ export async function fetchCustomers() {
     ORDER BY name ASC;
     `;
 
-    console.log("Database: Customers Loaded Successfully");
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -146,7 +180,6 @@ export async function fetchTickets() {
     ORDER BY ticket_id ASC;
     `;
 
-    console.log("Database: Tickets Loaded Successfully");
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -169,16 +202,9 @@ export async function fetchBookings() {
     ORDER BY booking_date ASC, booking_time ASC;
     `;
 
-    console.log("Database: Bookings Loaded Successfully");
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch booking.');
   }
 }
-
-//////////////////////////
-
-export async function valueFormatter(number: any) {
-  return "$ " + new Intl.NumberFormat("us").format(number).toString();
-};

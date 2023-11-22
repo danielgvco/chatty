@@ -21,6 +21,7 @@ const RevenueAreaChart: FC<RevenueAreaChartProps> = ({data}) => {
           `$ ${Intl.NumberFormat('us').format(number).toString()}`
         }
         yAxisWidth={60}
+        showAnimation={true}
       />
     </Card>
   );

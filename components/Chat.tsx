@@ -20,24 +20,13 @@ export default function Chat() {
         ],
     });
 
-    /*return (
-        <main className="mx-auto w-full h-screen max-w-lg p-24 flex flex-col">
-            <ChatMessages messages={messages} />
-            <ChatInput
-                input={input}
-                handleInputChange={handleInputChange}
-                handleSubmit={handleSubmit}
-            />
-        </main>
-    );*/
-
     return (
         <Accordion
             type='single'
             collapsible
             className='relative bg-white z-40 shadow'>
             <AccordionItem value='item-1'>
-                <div className='fixed right-8 w-80 bottom-8 bg-white border border-gray-200 rounded-md overflow-hidden'>
+                <div className='fixed right-8 w-80 bottom-8 bg-white border border-gray-200 rounded-md overflow-hidden animate-jump-in animate-thrice animate-duration-500 animate-delay-300 animate-ease-out'>
                     <div className='w-full h-full flex flex-col'>
                         <AccordionTrigger className='px-6 border-b border-zinc-300'>
                             <ChatHeader />
