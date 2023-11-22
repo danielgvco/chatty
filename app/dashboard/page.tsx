@@ -16,7 +16,7 @@ export default async function Dashboard() {
     const bookingsDonutChart = await countRowsInTableByStatus('call_bookings')
     const ticketsDonutChart = await countRowsInTableByStatus('tickets')
     return (
-        <div className="flex flex-col space-y-10 w-full p-6 justify-evenly">
+        <div className="flex flex-col space-y-10 w-full p-6 justify-evenly overflow-scroll">
             <div className="flex justify-between w-full">
                 <Card className="max-w-xs mx-auto" decoration="top" decorationColor="indigo">
                     <Text>Customers</Text>
