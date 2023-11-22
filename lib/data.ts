@@ -16,6 +16,7 @@ export async function fetchRevenue() {
   try {
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
+    console.log(data.rows);
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -26,7 +27,7 @@ export async function fetchRevenue() {
 export async function fetchLatestInvoices() {
   try {
     const data = await sql<LatestInvoiceRaw>`
-      SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
+      SELECT invoices.amount, customers.name, customers.email, invoices.id
       FROM invoices
       JOIN customers ON invoices.customer_id = customers.id
       ORDER BY invoices.date DESC
@@ -40,6 +41,36 @@ export async function fetchLatestInvoices() {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
+  }
+}
+
+export async function countRowsInTable(dbTable: 'customers' | 'invoices' | 'revenue' | 'call_bookings' | 'tickets') {
+  noStore();
+  try {
+    let data;
+    switch (dbTable) {
+      case 'customers':
+        data = await sql<{ count: number }>`SELECT COUNT(*) FROM customers`;
+        break;
+      case 'invoices':
+        data = await sql<{ count: number }>`SELECT COUNT(*) FROM invoices WHERE status = 'Pending'`;
+        break;
+      case 'revenue':
+        data = await sql<{ count: number }>`SELECT COUNT(*) FROM revenue`;
+        break;
+      case 'call_bookings':
+        data = await sql<{ count: number }>`SELECT COUNT(*) FROM call_bookings WHERE status = 'Scheduled'`;
+        break;
+      case 'tickets':
+        data = await sql<{ count: number }>`SELECT COUNT(*) FROM tickets WHERE status = 'Pending'`;
+        break;
+      default:
+        throw new Error(`Invalid table name: ${dbTable}`);
+    }
+    return data.rows[0].count;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to count rows in table ${dbTable}`);
   }
 }
 
@@ -145,3 +176,9 @@ export async function fetchBookings() {
     throw new Error('Failed to fetch booking.');
   }
 }
+
+//////////////////////////
+
+export async function valueFormatter(number: any) {
+  return "$ " + new Intl.NumberFormat("us").format(number).toString();
+};

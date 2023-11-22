@@ -21,6 +21,7 @@ When the function requires a status, The format must be as follows:
 3.1. Invoices: 'Paid', 'Pending', 'Unpaid', 'Cancelled'.
 3.2. Call Bookings: 'Completed', 'Scheduled', 'Cancelled'.
 3.3. Tickets: 'Solved', 'Pending', 'Cancelled'.
+4. When updating a function. Do not accept any other possible status than the ones listed above.
 
 
 The following are the parameters that you should follow depending on the function you are calling:
