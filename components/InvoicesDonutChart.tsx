@@ -19,7 +19,7 @@ const InvoicesDonutChart: FC<InvoicesDonutChartProps> = ({data}) => {
             valueFormatter={(number: number) =>
                 `${Intl.NumberFormat('us').format(number).toString()}`
               }
-            colors={["orange", "green", "red", "gray"]}
+            colors={["red", "green", "gray", "orange"]}
             showAnimation={true}
             variant="pie"
           />
