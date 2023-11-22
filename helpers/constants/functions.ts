@@ -2,69 +2,25 @@ import type { ChatCompletionCreateParams } from '@/node_modules/openai/resources
 
 export const functions: ChatCompletionCreateParams.Function[] = [
     {
-        name: 'get_current_weather',
-        description: 'Get the current weather',
+        name: 'createInvoice',
+        description: 'Create a new invoice',
         parameters: {
             type: 'object',
             properties: {
-                location: {
-                    type: 'string',
-                    description: 'The city and state, e.g. San Francisco, CA',
-                },
-                format: {
-                    type: 'string',
-                    enum: ['celsius', 'fahrenheit'],
-                    description:
-                        'The temperature unit to use. Infer this from the users location.',
-                },
-            },
-            required: ['location', 'format'],
-        },
-    },
-    {
-        name: 'getCurrentTime',
-        description: 'Get the current weather',
-        parameters: {
-            type: 'object',
-            properties: {},
-            required: [],
-        },
-    },
-    {
-        name: 'fetchRevenue',
-        description: 'Get all the revenue data',
-        parameters: {
-            type: 'object',
-            properties: {
-                format: {
-                    type: 'string',
-                },
-            },
-            required: ['format'],
-        },
-    },
-    {
-        name: 'fetchInvoiceById',
-        description: 'Fetch an invoice by its ID',
-        parameters: {
-            type: 'object',
-            properties: {
-                invoice_id: {
-                    type: 'string',
-                    description: "The ID of the invoice to fetch, only give the number as a prop, e.g. 5 instead of { invoice_id: '5' }",
-                },
                 customer_id: {
                     type: 'string',
-                    description: "The ID of the customer to fetch, only give the number as a prop, e.g. 5 instead of { customer_id: '5' }",
+                    description: 'The ID of the customer',
                 },
-                format: {
+                amount: {
+                    type: 'number',
+                    description: 'The amount of the invoice',
+                },
+                date: {
                     type: 'string',
-                    enum: ['1', '2', '3', '4'],
-                    description:
-                        'how all the IDs must be formatted, e.g. 1, 2, 3, 4, etc.',
+                    description: 'The current date of creation of the invoice',
                 },
             },
-            required: ['invoice_id', 'customer_id', 'format'],
+            required: ['customer_id', 'amount', 'date'],
         },
     },
     {
@@ -95,6 +51,10 @@ export const functions: ChatCompletionCreateParams.Function[] = [
                     type: 'string',
                     description: 'The ID of the customer making the booking',
                 },
+                purpose: {
+                    type: 'string',
+                    description: 'The purpose of the call booking',
+                },
                 booking_date: {
                     type: 'string',
                     description: 'The date of the booking',
@@ -103,18 +63,8 @@ export const functions: ChatCompletionCreateParams.Function[] = [
                     type: 'string',
                     description: 'The time of the booking',
                 },
-                purpose: {
-                    type: 'string',
-                    description: 'The purpose of the call booking',
-                },
-                format: {
-                    type: 'string',
-                    enum: ['1', '2', '3', '4'],
-                    description:
-                        'how all the IDs must be formatted, e.g. 1, 2, 3, 4, etc.',
-                },
             },
-            required: ['customer_id', 'booking_date', 'booking_time', 'purpose', 'format'],
+            required: ['customer_id', 'purpose', 'booking_date', 'booking_time'],
         },
     },
     {
@@ -123,14 +73,6 @@ export const functions: ChatCompletionCreateParams.Function[] = [
         parameters: {
             type: 'object',
             properties: {
-                booking_date: {
-                    type: 'string',
-                    description: 'The new booking date',
-                },
-                booking_time: {
-                    type: 'string',
-                    description: 'The new booking time',
-                },
                 booking_id: {
                     type: 'string',
                     description: 'The ID of the booking to modify',
@@ -139,14 +81,16 @@ export const functions: ChatCompletionCreateParams.Function[] = [
                     type: 'string',
                     description: 'The ID of the customer who made the booking',
                 },
-                format: {
+                booking_date: {
                     type: 'string',
-                    enum: ['1', '2', '3', '4'],
-                    description:
-                        'how all the IDs must be formatted, e.g. 1, 2, 3, 4, etc.',
+                    description: 'The new booking date',
+                },
+                booking_time: {
+                    type: 'string',
+                    description: 'The new booking time',
                 },
             },
-            required: ['booking_date', 'booking_time', 'booking_id', 'customer_id', 'format'],
+            required: ['booking_id', 'customer_id', 'booking_date', 'booking_time'],
         },
     },
     {
@@ -163,14 +107,88 @@ export const functions: ChatCompletionCreateParams.Function[] = [
                     type: 'string',
                     description: 'The ID of the customer who made the booking',
                 },
-                format: {
+            },
+            required: ['booking_id', 'customer_id'],
+        },
+    },
+    {
+        name: 'createTicket',
+        description: 'Create a new ticket',
+        parameters: {
+            type: 'object',
+            properties: {
+                customer_id: {
                     type: 'string',
-                    enum: ['1', '2', '3', '4'],
-                    description:
-                        'how all the IDs must be formatted, e.g. 1, 2, 3, 4, etc.',
+                    description: 'The ID of the customer',
+                },
+                comment: {
+                    type: 'string',
+                    description: 'The comment for the ticket',
+                },
+                date: {
+                    type: 'string',
+                    description: 'The date of the ticket',
                 },
             },
-            required: ['booking_id', 'customer_id', 'format'],
+            required: ['customer_id', 'comment', 'date'],
+        },
+    },
+    {
+        name: 'fetchTicketById',
+        description: 'Fetch a ticket by its ID',
+        parameters: {
+            type: 'object',
+            properties: {
+                ticket_id: {
+                    type: 'string',
+                    description: 'The ID of the ticket to fetch',
+                },
+                customer_id: {
+                    type: 'string',
+                    description: 'The ID of the customer',
+                },
+            },
+            required: ['ticket_id', 'customer_id'],
+        },
+    },
+    {
+        name: 'modifyTicketStatus',
+        description: 'Modify the status of a ticket',
+        parameters: {
+            type: 'object',
+            properties: {
+                ticket_id: {
+                    type: 'string',
+                    description: 'The ID of the ticket to modify',
+                },
+                customer_id: {
+                    type: 'string',
+                    description: 'The ID of the customer',
+                },
+                status: {
+                    type: 'string',
+                    description: 'The new status of the ticket',
+                },
+            },
+            required: ['ticket_id', 'customer_id', 'status'],
+        },
+    },
+    {
+        name: 'cancelTicket',
+        description: 'Cancel a ticket',
+        parameters: {
+            type: 'object',
+            properties: {
+                ticket_id: {
+                    type: 'string',
+                    description: 'The ID of the ticket to cancel',
+                },
+                customer_id: {
+                    type: 'string',
+                    description: 'The ID of the customer',
+                },
+            },
+            required: ['ticket_id', 'customer_id'],
         },
     }
 ];

@@ -1,32 +1,37 @@
-export interface fetchInvoiceByIdArgs {
+// Invoices
+
+export interface invoicesArgs {
     invoice_id: string;
     customer_id: string;
-    format: '1' | '2' | '3' | '4' | string;
+    amount: number;
+    status: 'Paid' | 'Pending' | 'Unpaid' | 'Cancelled' | string;
+    date: string;
 }
 
-export interface fetchInvoicesByCustomerIdArgs {
-    invoice_id: string;
-    customer_id: string;
-    format: '1' | '2' | '3' | '4' | string;
-}
+// Customers
 
 export interface createCustomerArgs {
     name: string;
     email: string;
 }
 
-export interface createCallBookingArgs {
-    customer_id: string;
-    booking_date: string;
-    booking_time: string;
-    purpose: string;
-    format: '1' | '2' | '3' | '4' | string;
-}
+// Call Bookings
 
-export interface modifyCallBookingArgs {
+export interface callBookingArgs {
     booking_id: string;
     customer_id: string;
+    purpose: string;
+    status: 'Completed' | 'Scheduled' | 'Cancelled' | string;
     booking_date: string;
     booking_time: string;
-    format: '1' | '2' | '3' | '4' | string;
+}
+
+// Tickets
+
+export interface ticketsArgs {
+    ticket_id: string;
+    customer_id: string;
+    status: 'Solved'| 'Pending'| 'Cancelled' | string;
+    comment: string;
+    date: string;
 }
